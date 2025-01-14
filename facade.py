@@ -42,6 +42,11 @@ class SystemFacade:
             self.like_logic.unlike_vacation(user_id, vacation_id)
         else:
             raise PermissionError("Only regular users can unlike vacations.")
+    def update_vacation(self, vacation_id, new_data):
+        try:
+            self.dal.update_vacation(vacation_id, new_data)
+        except Exception as e:
+            print(f"❌ Error in Facade during updating vacation: {e}")
 
 if __name__ == "__main__":
     mock_dal = MagicMock()
