@@ -111,7 +111,6 @@ class VacationLogic:
         self.dal.insert(query, (vacation_title, country_id, start_date_obj.strftime('%Y-%m-%d'), end_date_obj.strftime('%Y-%m-%d'), price, img_url, vacation_id))
 
     
-      
 if __name__ == "__main__":
     dal = DAL()
     vacation_logic = VacationLogic(dal)
@@ -126,6 +125,18 @@ if __name__ == "__main__":
             img_url="http://example.com/beach.jpg"
         )
         print("Vacation created successfully.")
+        
+        vacation_logic.update_vacation(
+            vacation_id=1,
+            vacation_title="Updated Beach Paradise",
+            country_name="Israel",
+            start_date="2025-07-01",
+            end_date="2025-07-10",
+            price=3500,
+            img_url="http://example.com/updated_beach.jpg"
+        )
+        print("Vacation updated successfully.")
+        
     except ValueError as e:
         print(f"Error: {e}")
     except Exception as e:
