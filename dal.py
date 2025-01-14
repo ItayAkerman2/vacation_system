@@ -54,19 +54,15 @@ class DAL:
         return None
 
     def get_table(self, query, params=None):
-        """שליפת כל השורות מטבלה"""
         return self._execute_query(query, params, fetchall=True)
 
     def get_scalar(self, query, params=None):
-        """שליפת ערך בודד (שורה אחת)"""
         return self._execute_query(query, params, fetchone=True)
 
     def insert(self, query, params=None):
-        """הוספת נתונים לטבלה"""
         return self._execute_query(query, params)
 
     def update(self, query, params=None):
-        """עדכון נתונים בטבלה"""
         return self._execute_query(query, params)
 
     def delete(self, query, params=None):
