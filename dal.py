@@ -34,20 +34,13 @@ class DAL:
         if self.connection:
             try:
                 with self.connection.cursor(dictionary=True) as cursor:
-                    print(f"Executing query: {query}")
-                    if params:
-                        print(f"With parameters: {params}")
                     cursor.execute(query, params)
                     if fetchall:
                         result = cursor.fetchall()
-                        print(f"Fetched {len(result)} rows")
                         return result
                     elif fetchone:
                         result = cursor.fetchone()
-                        print("Fetched one row")
                         return result
-                    else:
-                        print(f"Query affected {cursor.rowcount} rows")
                     return cursor
             except mysql.connector.Error as err:
                 print(f"Error executing query: {err}")
