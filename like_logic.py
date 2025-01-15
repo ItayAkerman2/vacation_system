@@ -24,41 +24,55 @@ class LikeLogic:
     def is_liked(self, user_id, vacation_id):
         query = "SELECT * FROM likes WHERE user_id = %s AND vacation_id = %s"
         results = self.dal.get_table(query, (user_id, vacation_id))
+        print(f"Results from is_liked: {results}") 
         return len(results) > 0
 
     def like_vacation(self, user_id, vacation_id):
       if not self._is_valid_user(user_id) or not self._is_valid_vacation(vacation_id):
         raise ValueError("Invalid user_id or vacation_id.")
-      
-      if not self.UserLogic.is_regular_user(self,user_id):
-            raise ValueError("Only regular users can like vacations.")
+    
+      if not self.UserLogic.is_regular_user(self, user_id):
+        raise ValueError("Only regular users can like vacations.")
 
       if self.is_liked(user_id, vacation_id):
-        print(f"⚠️ User {user_id} already liked vacation {vacation_id}.")
-        return
-
+        return 
+    
       query = "INSERT INTO likes (user_id, vacation_id) VALUES (%s, %s)"
-      print(f"Executing query: {query} with values ({user_id}, {vacation_id})")  
+      print(f"Executing query: {query} with values ({user_id}, {vacation_id})")
       self.dal._validate_query_params(query, (user_id, vacation_id))  
       self.dal._execute_query(query, (user_id, vacation_id))  
       print(f"✅ Vacation {vacation_id} liked by user {user_id}.")
+      return True
 
 
     def unlike_vacation(self, user_id, vacation_id):
       if not self._is_valid_user(user_id) or not self._is_valid_vacation(vacation_id):
         raise ValueError("Invalid user_id or vacation_id.")
-      
-      if not self.UserLogic.is_regular_user(self,user_id):
-          raise ValueError("Only regular users can unlike vacations.")
+    
+      if not self.UserLogic.is_regular_user(self, user_id):
+        raise ValueError("Only regular users can unlike vacations.")
 
+      if not self.is_liked(user_id, vacation_id):
+        return 
+        
+    
       query = "DELETE FROM likes WHERE user_id = %s AND vacation_id = %s"
-      self.dal._execute_query(query, (user_id, vacation_id)) 
+      self.dal._execute_query(query, (user_id, vacation_id))  
       print(f"✅ Vacation {vacation_id} unliked by user {user_id}.")
+      return True
+      
+
 
     def get_like_count(self, vacation_id):
-        query = "SELECT COUNT(*) FROM likes WHERE vacation_id = %s"
-        results = self.dal.get_table(query, (vacation_id,))
-        return results[0][0] if results else 0
+      query = "SELECT COUNT(*) FROM likes WHERE vacation_id = %s"
+      results = self.dal.get_table(query, (vacation_id,))
+    
+      if results and results[0]['COUNT(*)'] > 0:
+        return results[0]['COUNT(*)']
+      else:
+        print(f"No likes for vacation with ID {vacation_id}.")
+        return 0
+
 
 
 if __name__ == "__main__":
