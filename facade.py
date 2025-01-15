@@ -1,5 +1,5 @@
 from user_logic import UserLogic
-from vaction_logic import VacationLogic
+from vacation_logic import VacationLogic
 from like_logic import LikeLogic
 from unittest.mock import MagicMock
 
@@ -16,17 +16,11 @@ class SystemFacade:
     def login_user(self, email, password):
         return self.user_logic.login_user(email, password)
 
-    def create_vacation(self, user_id, *args):
-        if self.user_logic.is_admin(user_id):
-            self.vacation_logic.create_vacation(*args)
-        else:
-            raise PermissionError("Only admins can create vacations.")
+    def create_vacation(self,vacation_title, country_name, start_date, end_date, price, img_url=None):
+      self.vacation_logic.create_vacation(vacation_title, country_name, start_date, end_date, price, img_url)
 
-    def update_vacation(self, user_id, vacation_id, *args):
-        if self.user_logic.is_admin(user_id):
-            self.vacation_logic.update_vacation(vacation_id, *args)
-        else:
-            raise PermissionError("Only admins can update vacations.")
+    def update_vacation(self, vacation_id, vacation_title, country_name, start_date, end_date, price, img_url=None):
+      self.vacation_logic.update_vacation(vacation_id, vacation_title, country_name, start_date, end_date, price, img_url)
 
     def get_all_vacations(self):
         return self.vacation_logic.get_all_vacations()
@@ -42,11 +36,7 @@ class SystemFacade:
             self.like_logic.unlike_vacation(user_id, vacation_id)
         else:
             raise PermissionError("Only regular users can unlike vacations.")
-    def update_vacation(self, vacation_id, new_data):
-        try:
-            self.dal.update_vacation(vacation_id, new_data)
-        except Exception as e:
-            print(f"❌ Error in Facade during updating vacation: {e}")
+
 
 if __name__ == "__main__":
     mock_dal = MagicMock()
