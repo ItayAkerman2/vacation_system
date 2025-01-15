@@ -11,7 +11,12 @@ class VacationLogic:
             raise ValueError("Vacation title must be a non-empty string.")
         if len(vacation_title) > 100:  
             raise ValueError("Vacation title must be 100 characters or fewer.")
-
+        print(f"Received price: {price}")
+        try:
+         price = float(price)
+        except ValueError:
+          raise ValueError("Price must be a number.")
+        
         if not isinstance(price, (int, float)):
             raise ValueError("Price must be a number.")
         if price < 1000:
@@ -68,7 +73,7 @@ class VacationLogic:
         if not isinstance(price, (int, float)):
             raise ValueError("Price must be a number.")
         if price < 1000 :
-            raise ValueError("Price must be between $1,000 and $10,000.")
+            raise ValueError("Price must be minimum $1,000")
     
         try:
             start_date_obj = datetime.strptime(start_date, '%Y-%m-%d')
