@@ -10,7 +10,7 @@ class DAL:
 
                 user="root",   
 
-                password="zxzx2121",     
+                password="Itay1234",     
 
                 database="vacation_system", 
               
@@ -51,6 +51,8 @@ class DAL:
                     return cursor
             except mysql.connector.Error as err:
                 print(f"Error executing query: {err}")
+            else:
+                print("User registered successfully.")  
         return None
 
     def get_table(self, query, params=None):
