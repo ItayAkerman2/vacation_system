@@ -42,7 +42,7 @@ def main():
                     continue
 
                 user_id = system_facade.register_user(first_name, last_name, email, password, date_of_birth, role_id)
-                print(f"✅ User registered successfully! 🎉 Your User ID is: {user_id}")
+                print(f"✅ User registered successfully! 🎉 ")
             except Exception as e:
                 print(f"❌ Error during registration: {e}")
 
@@ -108,6 +108,9 @@ def main():
                 print("❌ Only admins can update vacations.")
 
         elif choice == "5":
+             if user is None:
+               print("❌ User is not logged in.")
+               continue
              if user is None or user['role_id'] != 1:  
               print("❌ Only users can like vacation.")
               continue
@@ -128,6 +131,9 @@ def main():
                 print(f"❌ Error during adding like: {e}")
 
         elif choice == "6":
+             if user is None:
+               print("❌ User is not logged in.")
+               continue
              if user is None or user['role_id'] != 1:  
                print("❌ Only users can unlike vacation.")
                continue  
