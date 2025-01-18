@@ -53,6 +53,7 @@ class LikeLogic:
         raise ValueError("Only regular users can unlike vacations.")
 
       if not self.is_liked(user_id, vacation_id):
+        print(f"⚠️ User {user_id} has not liked vacation {vacation_id} yet.")
         return 
         
     
@@ -73,6 +74,22 @@ class LikeLogic:
         print(f"No likes for vacation with ID {vacation_id}.")
         return 0
 
+    def show_all_vacations_with_likes(self):
+        query = """
+        SELECT v.vacation_id, v.vacation_title, COUNT(l.vacation_id) AS like_count
+        FROM vacations v
+        LEFT JOIN likes l ON v.vacation_id = l.vacation_id
+        GROUP BY v.vacation_id
+        """
+        results = self.dal.get_table(query)
+
+        if not results:
+            print("❌ No vacations found.")
+            return
+
+        print("🏝️ --- All Vacations with Likes ---")
+        for vacation in results:
+            print(f"ID: {vacation['vacation_id']} - Title: {vacation['vacation_title']} - Likes: {vacation['like_count']}")
 
 
 if __name__ == "__main__":
