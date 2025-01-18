@@ -39,7 +39,7 @@ class SystemFacade:
             raise PermissionError("Only regular users can unlike vacations.")
         
     def show_all_vacations_with_likes(self):
-        self.like_logic.show_all_vacations_with_likes(self)
+        self.like_logic.show_all_vacations_with_likes()
 
 
 if __name__ == "__main__":
