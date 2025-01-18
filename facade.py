@@ -39,22 +39,7 @@ class SystemFacade:
             raise PermissionError("Only regular users can unlike vacations.")
         
     def show_all_vacations_with_likes(self):
-        query = """
-        SELECT v.vacation_id, v.vacation_title, COUNT(l.vacation_id) AS like_count
-        FROM vacations v
-        LEFT JOIN likes l ON v.vacation_id = l.vacation_id
-        GROUP BY v.vacation_id
-        """
-        results = self.dal.get_table(query)
-
-        if not results:
-            print("❌ No vacations found.")
-            return
-
-        print("🏝️ --- All Vacations with Likes ---")
-        for vacation in results:
-            print(f"ID: {vacation['vacation_id']} - Title: {vacation['vacation_title']} - Likes: {vacation['like_count']}")
-
+        self.like_logic.show_all_vacations_with_likes(self)
 
 
 if __name__ == "__main__":
