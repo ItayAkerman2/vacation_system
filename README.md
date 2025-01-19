@@ -10,7 +10,6 @@ This project implements a **Vacation Management System** using **Python** and **
 ### **Key Details**
 - **Course**: Python
 - **Team Size**: Pairs (2 students)
-- **Duration**: 3 weeks
 - **Database**: MySQL
 - **Architecture**: Object-Oriented Programming (OOP)
 
