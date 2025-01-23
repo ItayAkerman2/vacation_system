@@ -118,6 +118,12 @@ class VacationLogic:
     def delete_vacation(self, vacation_id):
         if not isinstance(vacation_id, int):
             raise ValueError("Vacation ID must be an integer.")
+        try:
+          query_likes = "DELETE FROM likes WHERE vacation_id = %s"
+          self.dal.delete(query_likes, (vacation_id,))
+        except Exception as e:
+            raise ValueError(f"Error deleting : {e}")
+
 
         query = "DELETE FROM vacations WHERE vacation_id = %s"
         try:
@@ -126,6 +132,18 @@ class VacationLogic:
                 raise ValueError(f"No vacation found with vacation_id {vacation_id}.")
         except Exception as e:
             raise ValueError(f"Error deleting vacation: {e}")
+        
+
+    def get_vacation_by_id(self, vacation_id):
+      query = "SELECT COUNT(*) FROM vacations WHERE vacation_id = %s"
+      result = self.dal.get_scalar(query, (vacation_id,))
+    
+      if result and result["COUNT(*)"] > 0:
+       return True
+      else:
+        raise ValueError(f"Vacation with ID {vacation_id} does not exist.")
+
+ 
 
 if __name__ == "__main__":
     dal = DAL()
