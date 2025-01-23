@@ -1,4 +1,4 @@
-from logic.dal import DAL
+from utils.dal import DAL
 from datetime import datetime
 
 class VacationLogic:
@@ -6,16 +6,16 @@ class VacationLogic:
         self.dal = dal
 
     def create_vacation(self, vacation_title, country_name, start_date, end_date, price, img_url=None):
-      
+        
         if not vacation_title or not isinstance(vacation_title, str):
             raise ValueError("Vacation title must be a non-empty string.")
         if len(vacation_title) > 100:  
             raise ValueError("Vacation title must be 100 characters or fewer.")
         print(f"Received price: {price}")
         try:
-         price = float(price)
+            price = float(price)
         except ValueError:
-          raise ValueError("Price must be a number.")
+            raise ValueError("Price must be a number.")
         
         if not isinstance(price, (int, float)):
             raise ValueError("Price must be a number.")
@@ -115,7 +115,18 @@ class VacationLogic:
         """
         self.dal.insert(query, (vacation_title, country_id, start_date_obj.strftime('%Y-%m-%d'), end_date_obj.strftime('%Y-%m-%d'), price, img_url, vacation_id))
 
-    
+    def delete_vacation(self, vacation_id):
+        if not isinstance(vacation_id, int):
+            raise ValueError("Vacation ID must be an integer.")
+
+        query = "DELETE FROM vacations WHERE vacation_id = %s"
+        try:
+            affected_rows = self.dal.delete(query, (vacation_id,))
+            if affected_rows == 0:
+                raise ValueError(f"No vacation found with vacation_id {vacation_id}.")
+        except Exception as e:
+            raise ValueError(f"Error deleting vacation: {e}")
+
 if __name__ == "__main__":
     dal = DAL()
     vacation_logic = VacationLogic(dal)
@@ -141,6 +152,9 @@ if __name__ == "__main__":
             img_url="http://example.com/updated_beach.jpg"
         )
         print("Vacation updated successfully.")
+        
+        vacation_logic.delete_vacation(vacation_id=1)
+        print("Vacation deleted successfully.")
         
     except ValueError as e:
         print(f"Error: {e}")
