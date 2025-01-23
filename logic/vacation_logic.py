@@ -1,4 +1,4 @@
-from dal import DAL
+from logic.dal import DAL
 from datetime import datetime
 
 class VacationLogic:

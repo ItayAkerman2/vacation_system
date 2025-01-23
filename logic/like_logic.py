@@ -1,5 +1,5 @@
-from dal import DAL
-from user_logic import UserLogic
+from utils.dal import DAL
+from logic.user_logic import UserLogic
 
 class LikeLogic:
     def __init__(self, dal: DAL,user_logic):
