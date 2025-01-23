@@ -1,7 +1,9 @@
-from user_logic import UserLogic
-from vacation_logic import VacationLogic
-from like_logic import LikeLogic
+
+from logic.user_logic import UserLogic
+from logic.vacation_logic import VacationLogic
+from logic.like_logic import LikeLogic
 from unittest.mock import MagicMock
+import re
 
 
 class SystemFacade:
@@ -9,7 +11,7 @@ class SystemFacade:
         self.user_logic = UserLogic(dal)
         self.vacation_logic = VacationLogic(dal)
         self.like_logic = LikeLogic(dal, UserLogic)
-        self.dal = dal
+        
 
     def register_user(self, *args):
         self.user_logic.register_user(*args)
@@ -27,19 +29,27 @@ class SystemFacade:
         return self.vacation_logic.get_all_vacations()
 
     def like_vacation(self, user_id, vacation_id):
-        if self.user_logic.is_regular_user(user_id):
-            self.like_logic.like_vacation(user_id, vacation_id)
-        else:
-            raise PermissionError("Only regular users can like vacations.")
+        self.like_logic.like_vacation(user_id, vacation_id)
+        
 
     def unlike_vacation(self, user_id, vacation_id):
-        if self.user_logic.is_regular_user(user_id):
-            self.like_logic.unlike_vacation(user_id, vacation_id)
-        else:
-            raise PermissionError("Only regular users can unlike vacations.")
-        
+        self.like_logic.unlike_vacation(user_id, vacation_id)
+       
     def show_all_vacations_with_likes(self):
         self.like_logic.show_all_vacations_with_likes()
+    
+    def delete_vacation(self,vacation_id):
+        self.vacation_logic.delete_vacation(vacation_id)
+    
+    def delete_user(self,user_id,email):
+        self.user_logic.delete_user(user_id,email)
+
+    def _is_valid_email(self,email):
+       pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$'
+       return re.match(pattern, email) is not None
+    
+    def get_vacation_by_id(self, vacation_id):
+        self.vacation_logic.get_vacation_by_id(vacation_id)
 
 
 if __name__ == "__main__":
