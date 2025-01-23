@@ -1,5 +1,6 @@
 # src/logic/user_logic.py
 from dal import DAL
+import re
 
 
 class UserLogic:
@@ -24,8 +25,9 @@ class UserLogic:
 
 
 
-    def _is_valid_email(self, email):
-        return '@' in email and email.endswith('.com')
+    def _is_valid_email(self,email):
+      pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+      return re.match(pattern, email) is not None
     
     def login_user(self, email, password):
         query = "SELECT * FROM users WHERE email = %s"
