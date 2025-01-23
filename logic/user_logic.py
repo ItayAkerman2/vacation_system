@@ -10,9 +10,6 @@ class UserLogic:
         print("❌ Password does not meet requirements.")
         raise ValueError("Password must be at least 6 characters, contain one uppercase letter, and one number.")
 
-      if not self._is_valid_email(email):
-        print("❌ Invalid email format.")
-        raise ValueError("Invalid email format. It must contain '@' and end with '.com'.")
 
       query = """
         INSERT INTO users (firstname, lastname, email, password, date_of_birth, role_id)
@@ -20,15 +17,17 @@ class UserLogic:
       """
       try:
         self.dal.insert(query, (firstname, lastname, email, password, date_of_birth, role_id))
-        return True
+        print(f"✅ User registered successfully! 🎉")
+
       except Exception as e:
         print(f"❌ Error during registration: {e}")
         raise ValueError(f"Error registering user: {e}")
 
 
-    def _is_valid_email(self, email):
-        pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-        return re.match(pattern, email) is not None
+    def _is_valid_email(self,email):
+     pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$'
+     return re.match(pattern, email) is not None
+
 
     def login_user(self, email, password):
         query = "SELECT * FROM users WHERE email = %s"
